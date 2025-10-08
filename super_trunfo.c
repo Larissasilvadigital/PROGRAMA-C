@@ -35,7 +35,7 @@ int compararSeguindoRegra(Attribute a, double v1, double v2) {
 }
 
 // Função para comparar um atributo escolhido pelo usuário
-void comparacaoInterativa(
+int comparacaoInterativa(
     char cidade1[], char codigo1[], unsigned long populacao1, float area1, float pib1, int pontos1, double densidade1, double pibPerCapita1,
     char cidade2[], char codigo2[], unsigned long populacao2, float area2, float pib2, int pontos2, double densidade2, double pibPerCapita2
 ) {
@@ -53,7 +53,7 @@ void comparacaoInterativa(
         case 6: a = ATTR_PIB_PER_CAPITA; break;
         default:
             printf("Opção inválida!\n");
-            return;
+            return 0; // sem vitória
     }
 
     double v1=0, v2=0;
@@ -72,10 +72,11 @@ void comparacaoInterativa(
     if (resultado == 1) printf("Resultado: Carta 1 (%s) venceu!\n", cidade1);
     else if (resultado == 2) printf("Resultado: Carta 2 (%s) venceu!\n", cidade2);
     else printf("Resultado: Empate!\n");
+
+    return resultado;
 }
 
 // -----------------------------
-
 int main() {
     // --------- Carta 1 ---------
     char estado1[20] = "Paraná";
@@ -146,17 +147,28 @@ int main() {
     printf("PIB per Capita: Carta 1 venceu (%d)\n", pibPerCapita1>pibPerCapita2);
     printf("Super Poder: Carta 1 venceu (%d)\n", superPoder1>superPoder2);
 
-    // --------- Menu interativo ---------
+    // --------- Modo Mestre ---------
+    int vitorias1=0, vitorias2=0, rodadas=0;
+    printf("\n=== Nível Mestre: Jogar várias rodadas ===\n");
     while(1) {
-        printf("\nDeseja executar modo interativo?\n1 - Comparar 1 atributo\n0 - Sair\nOpção: ");
+        printf("\nDeseja jogar uma rodada? (1-Sim / 0-Sair): ");
         int opc = lerOpcaoMenu();
-        if(opc==0) break;
-        else if(opc==1) {
-            comparacaoInterativa(cidade1, codigo1, populacao1, area1, pib1, pontosTuristicos1, densidade1, pibPerCapita1,
-                                 cidade2, codigo2, populacao2, area2, pib2, pontosTuristicos2, densidade2, pibPerCapita2);
-        } else {
-            printf("Opção inválida!\n");
-        }
+        if(opc == 0) break;
+        rodadas++;
+        int resultado = comparacaoInterativa(cidade1, codigo1, populacao1, area1, pib1, pontosTuristicos1, densidade1, pibPerCapita1,
+                                             cidade2, codigo2, populacao2, area2, pib2, pontosTuristicos2, densidade2, pibPerCapita2);
+        if(resultado == 1) vitorias1++;
+        else if(resultado == 2) vitorias2++;
+        else printf("Empate nesta rodada!\n");
+    }
+
+    if(rodadas > 0) {
+        printf("\n=== Placar Final ===\n");
+        printf("%s: %d vitórias\n", cidade1, vitorias1);
+        printf("%s: %d vitórias\n", cidade2, vitorias2);
+        if(vitorias1 > vitorias2) printf("Carta 1 (%s) é a grande vencedora!\n", cidade1);
+        else if(vitorias2 > vitorias1) printf("Carta 2 (%s) é a grande vencedora!\n", cidade2);
+        else printf("O jogo terminou empatado!\n");
     }
 
     return 0;

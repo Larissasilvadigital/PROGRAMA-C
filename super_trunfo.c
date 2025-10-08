@@ -2,7 +2,6 @@
 #include <string.h>
 
 // -----------------------------
-// Definição do enum para atributos
 typedef enum {
     ATTR_POPULACAO,
     ATTR_AREA,
@@ -12,7 +11,6 @@ typedef enum {
     ATTR_PIB_PER_CAPITA
 } Attribute;
 
-// Função para ler uma opção de menu
 int lerOpcaoMenu() {
     char buf[16];
     if (fgets(buf, sizeof(buf), stdin) == NULL) return -1;
@@ -21,7 +19,7 @@ int lerOpcaoMenu() {
     return opc;
 }
 
-// Função para comparar dois valores seguindo a regra
+
 int compararSeguindoRegra(Attribute a, double v1, double v2) {
     if (a == ATTR_DENSIDADE) {  // menor vence
         if (v1 < v2) return 1;
@@ -34,7 +32,6 @@ int compararSeguindoRegra(Attribute a, double v1, double v2) {
     }
 }
 
-// Função para comparar um atributo escolhido pelo usuário
 int comparacaoInterativa(
     char cidade1[], char codigo1[], unsigned long populacao1, float area1, float pib1, int pontos1, double densidade1, double pibPerCapita1,
     char cidade2[], char codigo2[], unsigned long populacao2, float area2, float pib2, int pontos2, double densidade2, double pibPerCapita2
@@ -96,7 +93,7 @@ int main() {
     float pib2 = 11.2; // em bilhões
     int pontosTuristicos2 = 6;
 
-    // --------- Pergunta sobre digitar novos dados ---------
+    // 
     char resposta;
     printf("Deseja digitar novos dados para as cartas? (s/n): ");
     scanf(" %c", &resposta);
@@ -147,7 +144,7 @@ int main() {
     printf("PIB per Capita: Carta 1 venceu (%d)\n", pibPerCapita1>pibPerCapita2);
     printf("Super Poder: Carta 1 venceu (%d)\n", superPoder1>superPoder2);
 
-    // --------- Modo Mestre ---------
+
     int vitorias1=0, vitorias2=0, rodadas=0;
     printf("\n=== Nível Mestre: Jogar várias rodadas ===\n");
     while(1) {
